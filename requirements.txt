@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+python-multipart
+python-dotenv
+pinecone
+sentence-transformers
+langchain
+pdfminer.six
+python-docx
+boto3
+pytest
+requests
+openai
