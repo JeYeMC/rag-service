@@ -11,3 +11,6 @@ boto3
 pytest
 requests
 openai
+transformers
+torch
+scikit-learn
