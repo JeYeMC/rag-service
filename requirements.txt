@@ -1,16 +1,56 @@
+###############
+# FastAPI + Server
+###############
 fastapi
 uvicorn[standard]
 python-multipart
 python-dotenv
-pinecone
+pydantic
+pydantic-settings
+
+###############
+# Vector DB - Pinecone
+###############
+pinecone   # última versión estable
+
+###############
+# RAG - Embeddings & NLP
+###############
 sentence-transformers
-langchain
-pdfminer.six
-python-docx
-boto3
-pytest
-requests
+scikit-learn         # requerido por sentence-transformers
+numpy
+torch                # CPU/GPU auto-compatible
+
+###############
+# PDF Processing (deep analysis)
+###############
+pymupdf   # fitz, para extraer imágenes y texto
+python-docx          # para DOCX
+
+###############
+# LLM Integrations
+###############
 openai
 transformers
-torch
-scikit-learn
+requests
+
+###############
+# LangChain (mínimo, sin LangGraph)
+###############
+langchain
+langchain-core
+langchain-community
+
+###############
+# AWS tools (opcionales en tu caso)
+###############
+boto3
+
+###############
+# Tests
+###############
+pytest
+pytest-asyncio
+httpx
+
+

@@ -1,18 +1,28 @@
+# scripts/test_query.py
+
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
-from rag_pipeline import embed_texts
-from pinecone_client import query_index
+from app.rag.pipeline import answer_question
 
-query = "¿Qué cláusulas tiene el contrato?"
-vec = embed_texts([query])[0]
+def main():
+    print("🔥 Test rápido de consulta RAG\n")
 
-res = query_index("rag-index", vec, top_k=5)
+    while True:
+        q = input("Pregunta: ")
 
-for match in res["matches"]:
-    print("Score:", match["score"])
-    print("Chunk #:", match["metadata"].get("chunk_index"))
-    print("Texto:", match["metadata"]["text_excerpt"])
-    print("---")
+        if q.lower() in ["exit", "quit"]:
+            break
 
+        res = answer_question(q, top_k=5)
+
+        print("\n=== RESPUESTA ===")
+        print(res["answer"])
+        print("\n=== FUENTES ===")
+        for src in res["sources"]:
+            print(f"- {src}")
+        print("\n")
+
+if __name__ == "__main__":
+    main()

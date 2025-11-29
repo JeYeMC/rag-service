@@ -1,0 +1,17 @@
+2025-11-22 18:37:38,071 - INFO - rag_service - 🔥 CRM RAG Service iniciado correctamente.
+2025-11-22 18:40:18,494 - INFO - rag_service - Archivo recibido: storages\uploads\contrato-prestacion-de-servicios-persona-natural.pdf
+2025-11-22 18:40:18,496 - INFO - rag_service - Iniciando ingesta: storages\uploads\contrato-prestacion-de-servicios-persona-natural.pdf
+2025-11-22 18:40:18,575 - INFO - rag_service - Extrayendo texto de PDF con PyMuPDF: storages\uploads\contrato-prestacion-de-servicios-persona-natural.pdf
+2025-11-22 18:40:18,650 - INFO - rag_service - PDF analizado: 0 imágenes detectadas.
+2025-11-22 18:40:18,652 - INFO - rag_service - Cargando modelo de embeddings: all-mpnet-base-v2
+2025-11-22 18:40:37,757 - INFO - rag_service - Ingesta completada: contrato-prestacion-de-servicios-persona-natural.pdf -> 4ac999da-befa-46bf-90a4-2b943c010e25 (chunks=8, images=0)
+2025-11-22 18:43:02,391 - INFO - rag_service - Cargado cross-encoder: cross-encoder/ms-marco-MiniLM-L-6-v2
+2025-11-22 18:45:45,932 - INFO - rag_service - Extrayendo texto de PDF con PyMuPDF: storages\analyze\INCYTU_18-012.pdf
+2025-11-22 18:59:48,965 - INFO - rag_service - 🔥 CRM RAG Service iniciado correctamente.
+2025-11-22 19:00:26,044 - INFO - rag_service - Archivo recibido: storages\uploads\Contrato Propuesta.pdf
+2025-11-22 19:00:26,044 - INFO - rag_service - Iniciando ingesta: storages\uploads\Contrato Propuesta.pdf
+2025-11-22 19:00:26,140 - INFO - rag_service - Extrayendo texto de PDF con PyMuPDF: storages\uploads\Contrato Propuesta.pdf
+2025-11-22 19:00:26,485 - INFO - rag_service - PDF analizado: 37 imágenes detectadas.
+2025-11-22 19:00:26,491 - INFO - rag_service - Cargando modelo de embeddings: all-mpnet-base-v2
+2025-11-22 19:00:56,525 - INFO - rag_service - Ingesta completada: Contrato Propuesta.pdf -> ba283655-cf62-4145-bab1-6a2d48339aa1 (chunks=30, images=37)
+2025-11-22 19:04:12,151 - INFO - rag_service - Cargado cross-encoder: cross-encoder/ms-marco-MiniLM-L-6-v2
