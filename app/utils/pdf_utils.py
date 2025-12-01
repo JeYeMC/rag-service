@@ -1,5 +1,6 @@
 # app/utils/pdf_utils.py
-import pymupdf as fitz  # PyMuPDF
+
+import pymupdf as fitz
 from pathlib import Path
 from app.core.logger import logger
 
@@ -7,15 +8,16 @@ from app.core.logger import logger
 def analyze_pdf_images(file_path: str):
     """
     Analiza imágenes dentro de un PDF y devuelve:
-      - numero_imagenes
-      - lista con:
+        - numero_imagenes
+        - lista con:
             page: número de página
             image_index: índice de imagen
             width, height: dimensiones reales
             bbox: caja delimitadora en la página
             caption: texto cercano a la imagen
-            links: enlaces cercanos en la página
+            links: enlaces cercanos
     """
+
     path = Path(file_path)
 
     try:
@@ -27,26 +29,39 @@ def analyze_pdf_images(file_path: str):
     images_data = []
 
     for page_index, page in enumerate(doc):
+
+        # Lista de imágenes encontradas en la página
         img_list = page.get_images(full=True)
 
-        # Obtener todo el texto en bloques (para captions)
-        text_blocks = page.get_text("blocks")
+        # Texto dividido en bloques para buscar captions
+        text_blocks = page.get_text("blocks") or []
 
-        # Obtener todos los links del PDF
-        page_links = page.get_links()
+        # Links detectados en la página
+        page_links = page.get_links() or []
 
         for img_index, img in enumerate(img_list):
+
+            # xref es el identificador interno de la imagen
             xref = img[0]
-            base = doc.extract_image(xref)
 
             try:
-                bbox = page.get_image_bbox(img)
+                img_data = doc.extract_image(xref)
+                width = img_data.get("width")
+                height = img_data.get("height")
             except Exception:
-                bbox = (0, 0, 0, 0)
+                width, height = None, None
 
-            width, height = base.get("width"), base.get("height")
+            # Bounding box
+            try:
+                bbox = page.get_image_bbox(img)
+                bbox = tuple(map(float, bbox))
+            except Exception:
+                bbox = (0.0, 0.0, 0.0, 0.0)
 
+            # Caption cercana
             caption = _extract_caption_near_bbox(bbox, text_blocks)
+
+            # Links cercanos
             related_links = _find_links_near_bbox(bbox, page_links)
 
             images_data.append({
@@ -54,7 +69,7 @@ def analyze_pdf_images(file_path: str):
                 "image_index": img_index,
                 "width": width,
                 "height": height,
-                "bbox": tuple(map(float, bbox)),
+                "bbox": bbox,
                 "caption": caption,
                 "links": related_links,
                 "xref": xref,
@@ -70,14 +85,17 @@ def analyze_pdf_images(file_path: str):
 
 def _extract_caption_near_bbox(bbox, text_blocks, threshold=30):
     """
-    Busca texto cerca (debajo o encima) del área de la imagen.
-    threshold = distancia máxima en pixeles para considerar texto como caption.
+    Busca texto arriba o abajo del área de la imagen.
+    threshold: distancia máxima para considerar texto relevante.
     """
 
     x0, y0, x1, y1 = bbox
     candidates = []
 
     for block in text_blocks:
+        if len(block) < 5:
+            continue  # formato inesperado
+
         bx0, by0, bx1, by1, text, *_ = block
 
         # Texto debajo de la imagen
@@ -93,18 +111,22 @@ def _extract_caption_near_bbox(bbox, text_blocks, threshold=30):
 
 def _find_links_near_bbox(bbox, links, threshold=20):
     """
-    Encuentra hipervínculos cerca del área de la imagen.
+    Encuentra hipervínculos cercanos a la imagen.
     """
+
     x0, y0, x1, y1 = bbox
     related = []
 
     for link in links:
-        lx0, ly0, lx1, ly1 = link.get("from", (0, 0, 0, 0))
+        from_box = link.get("from")
+        if not from_box:
+            continue
 
-        # Consideramos un link "cercano" si su área toca o está cerca del bbox
+        lx0, ly0, lx1, ly1 = from_box
+
         if (
-            abs(ly0 - y1) <= threshold or abs(y0 - ly1) <= threshold
-            or abs(lx0 - x1) <= threshold or abs(x0 - lx1) <= threshold
+            abs(ly0 - y1) <= threshold or abs(y0 - ly1) <= threshold or
+            abs(lx0 - x1) <= threshold or abs(x0 - lx1) <= threshold
         ):
             related.append(link)
 

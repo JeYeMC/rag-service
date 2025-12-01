@@ -22,19 +22,37 @@ class Settings(BaseSettings):
     PINECONE_CLOUD: str = Field("aws", env="PINECONE_CLOUD")
 
     # ============================
-    # 🔹 EMBEDDINGS / LLM
+    # 🔹 EMBEDDINGS
     # ============================
+    # Valores posibles: "sentence_transformers" | "openai"
     EMB_PROVIDER: str = Field("sentence_transformers", env="EMB_PROVIDER")
-    EMB_MODEL: str = Field("all-mpnet-base-v2", env="EMB_MODEL")
 
-    # LLM MODE
+    # Modelo HF para embeddings (coincide con tu .env)
+    EMB_MODEL: str = Field(
+        "intfloat/multilingual-e5-base",
+        env="EMB_MODEL"
+    )
+
+    # OpenAI embeddings (solo si cambias provider)
+    OPENAI_EMB_MODEL: str = Field(
+        "text-embedding-3-large",
+        env="OPENAI_EMB_MODEL"
+    )
+
+    # ============================
+    # 🔹 LLM
+    # ============================
+    # Valores: "hf_inference" | "openai"
     LLM_PROVIDER: str = Field("hf_inference", env="LLM_PROVIDER")
 
+    # HuggingFace Inference API (coincide con tu .env)
     HF_INFERENCE_API_KEY: str | None = Field(None, env="HF_INFERENCE_API_KEY")
     HF_API_URL: str | None = Field(None, env="HF_API_URL")
-    HF_MODEL: str | None = Field(None, env="HF_MODEL")     #  ✅ NECESARIO
+    HF_MODEL: str | None = Field(None, env="HF_MODEL")  # AHORA SÍ EXISTE
 
+    # OpenAI LLM (solo si cambias provider)
     OPENAI_API_KEY: str | None = Field(None, env="OPENAI_API_KEY")
+    OPENAI_MODEL: str = Field("gpt-4o-mini", env="OPENAI_MODEL")  # AHORA SÍ EXISTE
 
     # ============================
     # 🔹 RE-RANKER / SUMMARIZER

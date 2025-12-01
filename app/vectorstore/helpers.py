@@ -2,17 +2,27 @@
 
 import uuid
 
-def build_metadata(doc_id: str, text: str, chunk_index: int, doc_type: str, source_name: str, extra_meta=None):
+def build_metadata(
+    doc_id: str,
+    text: str,
+    chunk_index: int,
+    doc_type: str,
+    source_name: str,
+    extra_meta=None
+):
     """
-    Construye los metadatos consistentes para cada vector.
+    Construye metadatos consistentes para Pinecone.
+    Compatible con el RAG Pipeline completo.
     """
+
     base = {
-        "doc_id": doc_id,
-        "chunk": chunk_index,
-        "doc_type": doc_type,
-        "source": source_name,
+        "document_id": doc_id,        # usado en queries y UI
+        "chunk_index": chunk_index,   # usado para trazabilidad
+        "doc_type": doc_type,         # email, contract, invoice...
+        "source_name": source_name,   # upload, crm, api...
+        "text_excerpt": text[:512],   # usado por reranker
         "length": len(text),
-        "preview": text[:180],   # ayuda para debugging
+        "preview": text[:180],        # útil para debugging en dashboard
     }
 
     if extra_meta:
@@ -23,13 +33,13 @@ def build_metadata(doc_id: str, text: str, chunk_index: int, doc_type: str, sour
 
 def generate_chunk_id(doc_id: str, chunk_index: int):
     """
-    ID único por chunk siguiendo un patrón consistente.
+    ID único para cada chunk.
     """
     return f"{doc_id}_chunk_{chunk_index}"
 
 
 def generate_doc_id():
     """
-    Crea un ID para cada documento.
+    ID único por documento.
     """
     return str(uuid.uuid4())

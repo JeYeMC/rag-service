@@ -16,7 +16,7 @@ ANALYZE_DIR.mkdir(parents=True, exist_ok=True)
 async def analyze_document(file: UploadFile = File(...)):
     """
     Devuelve:
-      - preview texto
+      - preview texto (limpio)
       - tipo de documento
       - tamaño
     """
@@ -24,13 +24,21 @@ async def analyze_document(file: UploadFile = File(...)):
     with open(dest, "wb") as f:
         shutil.copyfileobj(file.file, f)
 
-    text = extract_text(str(dest))
-    preview = text[:1200]
-    doc_type = detect_document_type(text)
+    # extract_text devuelve dict
+    result = extract_text(str(dest))
+
+    cleaned = result.get("cleaned_text", "")
+    raw = result.get("raw_text", "")
+
+    # preview basado en texto limpio
+    preview = cleaned[:1200] if cleaned else raw[:1200]
+
+    # detectar tipo basado en cleaned text
+    doc_type = detect_document_type(cleaned)
 
     return {
         "filename": file.filename,
-        "length": len(text),
+        "length": len(cleaned),
         "preview": preview,
         "doc_type": doc_type,
     }

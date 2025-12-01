@@ -31,6 +31,7 @@ python-docx          # para DOCX
 # LLM Integrations
 ###############
 openai
+openpyxl
 transformers
 requests
 
@@ -52,5 +53,7 @@ boto3
 pytest
 pytest-asyncio
 httpx
+extract-msg
+
 
 

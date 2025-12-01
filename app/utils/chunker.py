@@ -1,22 +1,38 @@
 # app/utils/chunker.py
-from typing import List
 
-def chunk_text(text: str, chunk_size: int = 500, chunk_overlap: int = 100) -> List[str]:
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+def chunk_text(
+    text: str,
+    chunk_size: int = 800,
+    chunk_overlap: int = 150
+):
     """
-    Divide texto en fragmentos con traslape.
-    Pensado para documentos largos (contratos, pólizas, propuestas).
+    Chunker basado en RecursiveCharacterTextSplitter.
+    Mucho más robusto para textos reales (PDFs, contratos, emails, facturas).
+
+    - chunk_size: tamaño máximo de cada chunk (caracteres)
+    - chunk_overlap: cantidad de traslape entre chunks
     """
+
     if not text:
         return []
 
-    words = text.split()
-    chunks = []
-    start = 0
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+        separators=[
+            "\n\n",     # separa por párrafos
+            "\n",       # luego por líneas
+            ". ",       # luego por oraciones
+            " ",        # luego por palabras
+            ""          # y finalmente por caracteres
+        ]
+    )
 
-    while start < len(words):
-        end = start + chunk_size
-        chunk = " ".join(words[start:end])
-        chunks.append(chunk)
-        start += chunk_size - chunk_overlap
+    chunks = splitter.split_text(text)
+
+    # Limpieza suave
+    chunks = [c.strip() for c in chunks if c.strip()]
 
     return chunks
