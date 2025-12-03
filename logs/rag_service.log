@@ -252,3 +252,97 @@ HTTP response body: {"code":3,"message":"Vector dimension 768 does not match the
 2025-11-30 22:26:39,494 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
 2025-11-30 22:26:41,853 - INFO - rag_service - 🤖 Generando respuesta LLM con provider='openai'
 2025-11-30 22:26:42,341 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)
+2025-12-03 10:57:24,480 - INFO - rag_service - 🔧 Logger inicializado
+2025-12-03 10:57:24,481 - INFO - rag_service - 🧠 EMBEDDINGS Provider: openai | Modelo: intfloat/multilingual-e5-base
+2025-12-03 10:57:24,482 - INFO - rag_service - 🤖 LLM Provider: openai | Modelo HF: deepseek-ai/DeepSeek-V3.2-Exp:novita
+2025-12-03 10:57:46,922 - INFO - rag_service - 🔥 CRM RAG Service iniciado correctamente.
+2025-12-03 10:58:59,436 - INFO - rag_service - Archivo recibido: storages\uploads\Contrato Propuesta.pdf usando proveedor 'openai'
+2025-12-03 10:58:59,437 - INFO - rag_service - Iniciando ingesta [openai] : storages\uploads\Contrato Propuesta.pdf
+2025-12-03 10:58:59,437 - INFO - rag_service - 📄 Extrayendo PDF: storages\uploads\Contrato Propuesta.pdf
+2025-12-03 10:59:00,177 - INFO - rag_service - PDF analizado: 37 imágenes detectadas.
+2025-12-03 10:59:00,188 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 10:59:01,611 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 10:59:17,703 - INFO - rag_service - ⚙️ Creando índice 'rag-index' en región us-east-1...
+2025-12-03 10:59:27,058 - INFO - rag_service - ✅ Índice creado correctamente.
+2025-12-03 11:00:22,171 - ERROR - rag_service - ❌ Error durante upsert en Pinecone: (400)
+Reason: Bad Request
+HTTP response headers: HTTPHeaderDict({'Date': 'Wed, 03 Dec 2025 16:00:22 GMT', 'Content-Type': 'application/json', 'Content-Length': '94', 'Connection': 'keep-alive', 'x-pinecone-request-latency-ms': '47672', 'x-pinecone-request-id': '6336354377597400020', 'x-envoy-upstream-service-time': '117', 'server': 'envoy'})
+HTTP response body: {"code":3,"message":"Request size 3MB exceeds the maximum supported size of 2MB","details":[]}
+
+2025-12-03 11:01:16,264 - INFO - rag_service - Archivo recibido: storages\uploads\contrato-prestacion-de-servicios-persona-natural.pdf usando proveedor 'openai'
+2025-12-03 11:01:16,266 - INFO - rag_service - Iniciando ingesta [openai] : storages\uploads\contrato-prestacion-de-servicios-persona-natural.pdf
+2025-12-03 11:01:16,267 - INFO - rag_service - 📄 Extrayendo PDF: storages\uploads\contrato-prestacion-de-servicios-persona-natural.pdf
+2025-12-03 11:01:16,430 - INFO - rag_service - PDF analizado: 0 imágenes detectadas.
+2025-12-03 11:01:16,432 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 11:01:16,432 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 11:01:21,056 - INFO - rag_service - ℹ️ El índice 'rag-index' ya existe.
+2025-12-03 11:01:36,050 - INFO - rag_service - ✅ Upsert completado: 58 vectores insertados.
+2025-12-03 11:01:36,052 - INFO - rag_service - 📘 Generando resumen con provider='openai'
+2025-12-03 11:01:36,787 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)
+2025-12-03 11:01:42,916 - INFO - rag_service - Ingesta completada [openai]: contrato-prestacion-de-servicios-persona-natural.pdf -> 2060ed28-c073-4db2-a0bb-012f3aa065f2 (chunks=58, images=0)
+2025-12-03 11:03:47,649 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 11:03:47,649 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 11:03:54,721 - INFO - rag_service - Cargado cross-encoder cross-encoder/ms-marco-MiniLM-L-6-v2 para provider=hf
+2025-12-03 11:03:59,540 - INFO - rag_service - 🤖 Generando respuesta LLM con provider='openai'
+2025-12-03 11:04:00,325 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)
+2025-12-03 11:09:08,501 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 11:09:08,502 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 11:09:14,754 - INFO - rag_service - 🤖 Generando respuesta LLM con provider='openai'
+2025-12-03 11:09:15,564 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)
+2025-12-03 11:11:46,255 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 11:11:46,255 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 11:11:50,522 - INFO - rag_service - 🤖 Generando respuesta LLM con provider='openai'
+2025-12-03 11:11:50,999 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)
+2025-12-03 11:12:16,828 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 11:12:16,829 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 11:12:25,179 - INFO - rag_service - 🤖 Generando respuesta LLM con provider='openai'
+2025-12-03 11:12:25,668 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)
+2025-12-03 11:57:13,083 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 11:57:13,084 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 11:57:17,163 - INFO - rag_service - 🤖 Generando respuesta LLM con provider='openai'
+2025-12-03 11:57:17,705 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)
+2025-12-03 12:00:42,766 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 12:00:42,766 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 12:00:47,643 - INFO - rag_service - 🤖 Generando respuesta LLM con provider='openai'
+2025-12-03 12:00:48,126 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)
+2025-12-03 12:09:55,703 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 12:09:55,704 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 12:10:00,679 - INFO - rag_service - 🤖 Generando respuesta LLM con provider='openai'
+2025-12-03 12:10:01,147 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)
+2025-12-03 12:13:39,075 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 12:13:39,075 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 12:13:41,917 - INFO - rag_service - 🤖 Generando respuesta LLM con provider='openai'
+2025-12-03 12:13:42,458 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)
+2025-12-03 12:47:12,051 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 12:47:12,054 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 12:47:15,590 - INFO - rag_service - 🤖 Generando respuesta LLM con provider='openai'
+2025-12-03 12:47:16,063 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)
+2025-12-03 12:47:27,111 - INFO - rag_service - 🔧 Logger inicializado
+2025-12-03 12:47:27,112 - INFO - rag_service - 🧠 EMBEDDINGS Provider: openai | Modelo: intfloat/multilingual-e5-base
+2025-12-03 12:47:27,112 - INFO - rag_service - 🤖 LLM Provider: openai | Modelo HF: deepseek-ai/DeepSeek-V3.2-Exp:novita
+2025-12-03 12:47:40,474 - INFO - rag_service - 🔥 CRM RAG Service iniciado correctamente.
+2025-12-03 12:49:04,108 - INFO - rag_service - 🔧 Logger inicializado
+2025-12-03 12:49:04,109 - INFO - rag_service - 🧠 EMBEDDINGS Provider: openai | Modelo: intfloat/multilingual-e5-base
+2025-12-03 12:49:04,109 - INFO - rag_service - 🤖 LLM Provider: openai | Modelo HF: deepseek-ai/DeepSeek-V3.2-Exp:novita
+2025-12-03 12:49:08,836 - INFO - rag_service - 🔥 CRM RAG Service iniciado correctamente.
+2025-12-03 12:50:18,789 - INFO - rag_service - Archivo recibido: storages\uploads\contrato-prestacion-de-servicios-persona-natural.pdf usando proveedor 'openai'
+2025-12-03 12:50:18,790 - INFO - rag_service - Iniciando ingesta [openai] : storages\uploads\contrato-prestacion-de-servicios-persona-natural.pdf
+2025-12-03 12:50:18,790 - INFO - rag_service - 📄 Extrayendo PDF: storages\uploads\contrato-prestacion-de-servicios-persona-natural.pdf
+2025-12-03 12:50:18,876 - INFO - rag_service - PDF analizado: 0 imágenes detectadas.
+2025-12-03 12:50:18,878 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 12:50:19,417 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 12:50:23,470 - INFO - rag_service - ⚙️ Creando índice 'rag-index' en región us-east-1...
+2025-12-03 12:50:33,205 - INFO - rag_service - ✅ Índice creado correctamente.
+2025-12-03 12:50:50,399 - INFO - rag_service - ✅ Upsert completado: 58 vectores insertados.
+2025-12-03 12:50:50,401 - INFO - rag_service - 📘 Generando resumen con provider='openai'
+2025-12-03 12:50:50,814 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)
+2025-12-03 12:50:56,840 - INFO - rag_service - Ingesta completada [openai]: contrato-prestacion-de-servicios-persona-natural.pdf -> 1c2efab3-c98b-4959-a3df-ccec82c14b55 (chunks=58, images=0)
+2025-12-03 12:52:19,670 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 12:52:19,676 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 12:52:25,064 - INFO - rag_service - Cargado cross-encoder cross-encoder/ms-marco-MiniLM-L-6-v2 para provider=openai
+2025-12-03 12:52:27,557 - INFO - rag_service - 🤖 Generando respuesta LLM con provider='openai'
+2025-12-03 12:52:28,015 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)
+2025-12-03 12:55:48,584 - INFO - rag_service - 🔸 Embeddings Provider Seleccionado: openai
+2025-12-03 12:55:48,584 - INFO - rag_service - 🔹 Usando OpenAI embeddings (text-embedding-3-large)
+2025-12-03 12:55:51,835 - INFO - rag_service - 🤖 Generando respuesta LLM con provider='openai'
+2025-12-03 12:55:52,475 - INFO - rag_service - 🧠 Llamando OpenAI Chat (gpt-4o-mini)

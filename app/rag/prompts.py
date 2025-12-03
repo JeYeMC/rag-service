@@ -1,23 +1,28 @@
 """
 Prompts usados por el RAG Pipeline.
-Incluye contexto CRM-aware y especialización según tipo de documento.
+Versión ajustada: sin chunk_index y con reporte de documentos usados.
 """
 
 # ============================================================
-# 1. Prompt general del sistema
+# 1. Prompt general del sistema (más estricto, sin chunk_index)
 # ============================================================
 
 BASE_SYSTEM_PROMPT = """
-Eres un asistente experto en análisis de documentos dentro de un CRM empresarial.
-Debes responder de forma clara, objetiva y con trazabilidad hacia los fragmentos
-del documento original.
+Eres un asistente experto en análisis documental dentro de un CRM empresarial,
+especializado en contratos, facturas, correos, políticas y documentos corporativos.
 
-Reglas obligatorias:
-- Usa únicamente la información del *Contexto* provisto.
-- Si no hay suficiente información, dilo explícitamente.
-- No inventes datos.
-- Si hay ambigüedad, solicita aclaración.
-- Ajusta tu estilo dependiendo del tipo de documento detectado o declarado.
+Debes responder SIEMPRE usando exclusivamente la información del CONTEXTO provisto.
+No puedes usar conocimientos externos, memoria previa ni completar huecos inventados.
+
+REGLAS OBLIGATORIAS:
+- Usa ÚNICAMENTE el *Contexto* provisto.
+- NO inventes datos. No asumas nada.
+- Si no encuentras la información en el contexto: responde “El documento no contiene esa información según el contexto disponible.”
+- Si hay ambigüedad: solicita aclaración.
+- NO uses chunk_index ni IDs internos.
+- Al final incluye una sección llamada **Fuentes**, listando los nombres de los documentos usados.
+- Mantén las respuestas claras, breves y basadas únicamente en el contenido del contexto.
+- Nunca cambies el significado del texto original.
 """
 
 # ============================================================
@@ -26,27 +31,31 @@ Reglas obligatorias:
 
 DOC_TYPE_PROMPTS = {
     "contract": """
-El documento es un **contrato**. Extrae y explica:
+El documento es un **contrato**. Extrae y explica únicamente lo explícito:
 - Partes contratantes
 - Objeto del contrato
-- Plazos o vigencias
-- Responsabilidades principales
+- Plazo o vigencia
+- Obligaciones principales
 - Condiciones económicas
-- Cláusulas clave (penalidades, terminación, confidencialidad)
-- Riesgos o alertas si se detectan inconsistencias
+- Cláusulas de terminación
+- Penalidades o sanciones
+- Responsabilidades sobre propiedad intelectual
+- Alertas sobre riesgos documentados
+
+No interpretes más allá del texto.
 """,
 
     "email": """
 El documento es un **correo electrónico**. Identifica:
-- Remitente y destinatario
-- Intención principal del mensaje
-- Solicitudes o requerimientos
-- Tono (formal, urgente, seguimiento, reclamo, etc.)
-- Acciones sugeridas
+- Remitente, destinatario(s)
+- Motivo del mensaje
+- Solicitudes
+- Urgencia si se menciona
+- Compromisos o acciones solicitadas
 """,
 
     "invoice": """
-El documento es una **factura**. Extrae:
+El documento es una **factura**. Extrae solo lo explícito:
 - Cliente
 - Fecha de emisión
 - Valor total
@@ -57,24 +66,24 @@ El documento es una **factura**. Extrae:
 
     "pqr": """
 El documento corresponde a una **PQRS**. Extrae:
-- Tipo de solicitud (petición, queja, reclamo o solicitud)
-- Usuario o afectado
-- Problema o requerimiento
-- Nivel de urgencia
-- Respuesta recomendada
+- Tipo (petición, queja, reclamo o solicitud)
+- Usuario afectado
+- Descripción del problema
+- Urgencia si se menciona
+- Posible respuesta basada únicamente en el texto
 """,
 
     "policy": """
-El documento es una **política o reglamento corporativo**. Describe:
-- Objetivo de la política
-- Normas clave
-- Roles o responsables
-- Casos de aplicación
+El documento es una **política corporativa**. Describe:
+- Objetivo
+- Normas principales
+- Responsables
+- Ámbito de aplicación
 """,
 
     "other": """
 Documento general.
-Extrae la información más relevante de forma clara y estructurada.
+Extrae únicamente la información explícita relevante.
 """
 }
 
@@ -83,14 +92,15 @@ Extrae la información más relevante de forma clara y estructurada.
 # ============================================================
 
 SUMMARY_PROMPT = """
-Resume el siguiente contenido de forma clara y estructurada.
+Resume el contenido de forma objetiva, concisa y sin agregar información externa.
+
 Incluye:
 - Idea principal
-- Puntos claves
-- Entidades importantes
-- Fechas, valores o compromisos si existen
+- Puntos clave
+- Entidades relevantes
+- Fechas o valores si aparecen
 
-No inventes información no contenida en el texto.
+Regla clave: NO inventes información.
 """
 
 # ============================================================
@@ -98,7 +108,7 @@ No inventes información no contenida en el texto.
 # ============================================================
 
 ENTITY_EXTRACTION_PROMPT = """
-Extrae entidades estructuradas del siguiente contenido.
+Extrae entidades SOLO si aparecen explícitamente.
 Devuelve el resultado en formato JSON:
 
 {
@@ -111,20 +121,22 @@ Devuelve el resultado en formato JSON:
   "acciones_solicitadas": []
 }
 
-No inventes entidades. Solo retorna lo explícitamente mencionado.
+Si una categoría no tiene información explícita, déjala como lista vacía.
 """
 
 # ============================================================
-# 5. Helper para construir prompts finales
+# 5. Helper para construir prompts finales (sin chunk_index)
 # ============================================================
 
 def build_prompt(doc_type: str, context: str, question: str):
     """
-    Construye el prompt completo utilizado por el LLM:
+    Construye el prompt:
     - Prompt base del sistema
     - Prompt especializado por tipo de documento
-    - Contexto recuperado por el RAG
+    - Contexto
     - Pregunta del usuario
+
+    NOTA: Este prompt ya NO usa chunk_index.
     """
 
     doc_prompt = DOC_TYPE_PROMPTS.get(doc_type, DOC_TYPE_PROMPTS["other"])
@@ -132,7 +144,7 @@ def build_prompt(doc_type: str, context: str, question: str):
     return f"""
 {BASE_SYSTEM_PROMPT}
 
-=== CONTEXTO DEL DOCUMENTO ===
+=== CONTEXTO DEL DOCUMENTO (fragmentos recuperados) ===
 {context}
 
 === INSTRUCCIONES ESPECÍFICAS PARA TIPO DE DOCUMENTO: {doc_type.upper()} ===
@@ -141,5 +153,9 @@ def build_prompt(doc_type: str, context: str, question: str):
 === PREGUNTA DEL USUARIO ===
 {question}
 
-Responde de forma clara, profesional y usando exclusivamente la información del contexto.
+Recuerda:
+- Usa únicamente el CONTEXTO.
+- No incluyas chunk_index.
+- No inventes información.
+- Al final el LLM debe agregar una sección 'Fuentes' con los nombres de los documentos usados.
 """
